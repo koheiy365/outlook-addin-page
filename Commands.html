@@ -12,7 +12,7 @@
             function openInfoCall(event) {
                 Office.context.ui.displayDialogAsync(
                     INFOCALL_URL,
-                    { height: 90, width: 90 },
+                    { height: 50, width: 50 },
                     function (asyncResult) {
                         if (asyncResult.status === Office.AsyncResultStatus.Failed) {
                             // 選択結果をメールへ反映する連携は行わない（閲覧・検索専用)ため、
