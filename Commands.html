@@ -5,27 +5,17 @@
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
     <script>
         (function () {
-            function getPageFolder() {
-                var path = window.location.pathname || '';
-                var lastSlash = path.lastIndexOf('/');
-                return lastSlash >= 0 ? path.substring(0, lastSlash) : '';
-            }
-
-            // Commands.html は ".../InfoshareProductLibrary/Sources/Infoshare.InfoCall/Extensions/Outlook/Sources/Commands.html" に配置される前提。
-            // 3階層上(Extensions/Outlook/Sources分)が ".../Infoshare.InfoCall" となり、その直下に InfoCall.aspx がある。
-            function getInfoCallAspxUrl() {
-                var parts = getPageFolder().split('/');
-                parts.length = Math.max(parts.length - 3, 0);
-                return window.location.origin + parts.join('/') + '/InfoCall.aspx';
-            }
+            // GitHub Pages（このファイルの配置先）とSharePoint（InfoCall.aspx）はオリジンが異なるため、
+            // 相対パスからの逆算はできない。絶対URLを直接指定する。
+            var INFOCALL_URL = "https://datawarenet.sharepoint.com/sites/Dev_KoheiY00/InfoshareProductLibrary/Sources/Infoshare.InfoCall/InfoCall.aspx";
 
             function openInfoCall(event) {
                 Office.context.ui.displayDialogAsync(
-                    getInfoCallAspxUrl(),
+                    INFOCALL_URL,
                     { height: 90, width: 90 },
                     function (asyncResult) {
                         if (asyncResult.status === Office.AsyncResultStatus.Failed) {
-                            // 選択結果をメールへ反映する連携は行わない（閲覧・検索専用）ため、
+                            // 選択結果をメールへ反映する連携は行わない（閲覧・検索専用)ため、
                             // ここで失敗しても通知手段を持たずコンソールログのみ残す
                             console.error('InfoCall dialog failed to open: ' + asyncResult.error.code + ' ' + asyncResult.error.message);
                         }
